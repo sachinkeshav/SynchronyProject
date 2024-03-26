@@ -1,0 +1,16 @@
+imgur:
+  client-id: 95738de264e36d1
+  client-secret: 6df4e44508d592432918a36bde3bf9c926399b9c
+  base-uri: https://api.imgur.com
+  token-url: https://api.imgur.com/oauth2/token
+  image-url: https://api.imgur.com/3/image
+  default:
+    access-token: 248cbff130275534dfa721e3d2639ef817a63687
+    refresh-token: b742928b5860799803f0a8b661ae75d95518ebe0
+    expires-in: 315360000
+    username: root
+    password: '{bcrypt}$2a$10$50twxS4gNMrDYd5ZbtzXXO5Zf3IGYGwPCBdd6BDh2gui4U03/jAbi'
+    firstname: root
+    lastname: root
+    email: root@synchrony-project.com
+    phone: 1234567890
