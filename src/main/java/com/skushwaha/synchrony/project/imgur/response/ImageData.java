@@ -2,28 +2,28 @@ package com.skushwaha.synchrony.project.imgur.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.List;
 
 @JsonInclude(Include.NON_EMPTY)
 public class ImageData implements Serializable {
-  @SerializedName("id")
+  @JsonProperty("id")
   private String imageHash;
 
-  @SerializedName("deletehash")
+  @JsonProperty("deletehash")
   private String deleteHash;
 
-  @SerializedName("account_id")
+  @JsonProperty("account_id")
   private String accountId;
 
-  @SerializedName("account_url")
+  @JsonProperty("account_url")
   private String accountUrl;
 
-  @SerializedName("ad_type")
+  @JsonProperty("ad_type")
   private String adType;
 
-  @SerializedName("ad_url")
+  @JsonProperty("ad_url")
   private String adUrl;
 
   private String title;
@@ -40,21 +40,21 @@ public class ImageData implements Serializable {
   private boolean animated;
   private boolean favorite;
 
-  @SerializedName("in_gallery")
+  @JsonProperty("in_gallery")
   private boolean inGallery;
 
-  @SerializedName("in_most_viral")
+  @JsonProperty("in_most_viral")
   private boolean inMostViral;
 
-  @SerializedName("has_sound")
+  @JsonProperty("has_sound")
   private boolean hasSound;
 
-  @SerializedName("is_ad")
+  @JsonProperty("is_ad")
   private boolean isAd;
 
   private boolean nsfw;
 
-  @SerializedName("link")
+  @JsonProperty("link")
   private String imageUrl;
 
   private List<String> tags;
@@ -292,5 +292,83 @@ public class ImageData implements Serializable {
 
   public void setHls(String hls) {
     this.hls = hls;
+  }
+
+  @Override
+  public String toString() {
+    return "ImageData{"
+        + "imageHash='"
+        + imageHash
+        + '\''
+        + ", deleteHash='"
+        + deleteHash
+        + '\''
+        + ", accountId='"
+        + accountId
+        + '\''
+        + ", accountUrl='"
+        + accountUrl
+        + '\''
+        + ", adType='"
+        + adType
+        + '\''
+        + ", adUrl='"
+        + adUrl
+        + '\''
+        + ", title='"
+        + title
+        + '\''
+        + ", description='"
+        + description
+        + '\''
+        + ", name='"
+        + name
+        + '\''
+        + ", type='"
+        + type
+        + '\''
+        + ", width="
+        + width
+        + ", height="
+        + height
+        + ", size="
+        + size
+        + ", views="
+        + views
+        + ", section='"
+        + section
+        + '\''
+        + ", vote="
+        + vote
+        + ", bandwidth="
+        + bandwidth
+        + ", animated="
+        + animated
+        + ", favorite="
+        + favorite
+        + ", inGallery="
+        + inGallery
+        + ", inMostViral="
+        + inMostViral
+        + ", hasSound="
+        + hasSound
+        + ", isAd="
+        + isAd
+        + ", nsfw="
+        + nsfw
+        + ", imageUrl='"
+        + imageUrl
+        + '\''
+        + ", tags="
+        + tags
+        + ", datetime="
+        + datetime
+        + ", mp4='"
+        + mp4
+        + '\''
+        + ", hls='"
+        + hls
+        + '\''
+        + '}';
   }
 }

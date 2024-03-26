@@ -33,4 +33,16 @@ public class ImageUploadResponse implements Serializable {
   public void setData(ImageData data) {
     this.data = data;
   }
+
+  @Override
+  public String toString() {
+    return "ImageUploadResponse{"
+        + "status="
+        + status
+        + ", success="
+        + success
+        + ", data="
+        + data
+        + '}';
+  }
 }

@@ -2,31 +2,31 @@ package com.skushwaha.synchrony.project.imgur.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.nimbusds.jose.shaded.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
 @JsonInclude(Include.NON_EMPTY)
 public class TokenResponse implements Serializable {
-  @SerializedName("access_token")
+  @JsonProperty("access_token")
   private String accessToken;
 
-  @SerializedName("expires_in")
+  @JsonProperty("expires_in")
   private long expiresIn;
 
-  @SerializedName("token_type")
+  @JsonProperty("token_type")
   private String tokenType;
 
-  @SerializedName("scope")
+  @JsonProperty("scope")
   private String scope;
 
-  @SerializedName("refresh_token")
+  @JsonProperty("refresh_token")
   private String refreshToken;
 
-  @SerializedName("account_id")
+  @JsonProperty("account_id")
   private long accountId;
 
-  @SerializedName("account_username")
+  @JsonProperty("account_username")
   private String accountUsername;
 
   public TokenResponse() {}
