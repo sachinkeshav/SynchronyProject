@@ -61,7 +61,7 @@ public class UserService {
   public UserEntity readUserFromDb(String username, String password) throws UserNotFoundException {
     UserEntity userEntity = userRepository.findByUsername(username);
     if (userEntity == null) {
-      LOG.error("Unable to find user with given username {}", username);
+      LOG.warn("Unable to find user with given username {}", username);
       throw new UserNotFoundException("Unable to find user");
     }
 
@@ -69,7 +69,7 @@ public class UserService {
       return userEntity;
     }
 
-    LOG.error(
+    LOG.warn(
         "Unable to find user with given username and password combination. Username: {}, Password: {}",
         username,
         password);
@@ -88,17 +88,17 @@ public class UserService {
 
   private void validateNewUser(UserRegistrationRequest request) throws UserAlreadyExistException {
     if (checkIfUserExistForUsername(request.getUsername())) {
-      LOG.error("User already exists for this username. Registration request: {}", request);
+      LOG.warn("User already exists for this username. Registration request: {}", request);
       throw new UserAlreadyExistException("User already exists for this username");
     }
 
     if (checkIfUserExistForEmail(request.getEmail())) {
-      LOG.error("User already exists for this email. Registration request: {}", request);
+      LOG.warn("User already exists for this email. Registration request: {}", request);
       throw new UserAlreadyExistException("User already exists for this email");
     }
 
     if (checkIfUserExistForPhone(request.getPhone())) {
-      LOG.error("User already exists for this phone. Registration request: {}", request);
+      LOG.warn("User already exists for this phone. Registration request: {}", request);
       throw new UserAlreadyExistException("User already exists for this phone");
     }
   }

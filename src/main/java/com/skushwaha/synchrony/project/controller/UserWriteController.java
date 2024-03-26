@@ -5,7 +5,6 @@ import com.skushwaha.synchrony.project.request.UserRegistrationRequest;
 import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.response.UserResponse;
 import com.skushwaha.synchrony.project.service.UserService;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,23 +24,11 @@ public class UserWriteController {
     this.userService = userService;
   }
 
-  @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/register-user", consumes = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("hasAuthority('SCOPE_write')")
-  public Response<UserResponse> registerUser(
-      final @Valid @RequestBody UserRegistrationRequest request) throws UserAlreadyExistException {
-    LOG.info("User registration request: {}", request.toString());
+  public Response<UserResponse> registerUser(final @RequestBody UserRegistrationRequest request)
+      throws UserAlreadyExistException {
+    LOG.debug("User registration request: {}", request.toString());
     return userService.registerUser(request);
-  }
-
-  @PutMapping(path = "/update")
-  @PreAuthorize("hasAuthority('SCOPE_write')")
-  public String updateUser() {
-    return "Access granted: user updated successfully";
-  }
-
-  @DeleteMapping(path = "/delete")
-  @PreAuthorize("hasAuthority('SCOPE_write')")
-  public String deleteUser() {
-    return "";
   }
 }
