@@ -17,7 +17,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @NoArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
-public class ImageData implements Serializable {
+public class ImgurData implements Serializable {
   @JsonProperty("id")
   private String imageHash;
 

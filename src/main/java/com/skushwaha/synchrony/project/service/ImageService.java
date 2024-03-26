@@ -1,9 +1,10 @@
 package com.skushwaha.synchrony.project.service;
 
+import com.skushwaha.synchrony.project.exception.ImageNotFoundException;
 import com.skushwaha.synchrony.project.exception.UserNotFoundException;
 import com.skushwaha.synchrony.project.imgur.client.ImgurApiClient;
-import com.skushwaha.synchrony.project.imgur.response.ImageData;
-import com.skushwaha.synchrony.project.imgur.response.ImageUploadResponse;
+import com.skushwaha.synchrony.project.imgur.response.ImgurData;
+import com.skushwaha.synchrony.project.imgur.response.ImgurResponse;
 import com.skushwaha.synchrony.project.model.ImageEntity;
 import com.skushwaha.synchrony.project.model.UserEntity;
 import com.skushwaha.synchrony.project.repository.ImageRepository;
@@ -12,6 +13,7 @@ import com.skushwaha.synchrony.project.response.ImageResponse;
 import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.response.UserImage;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +39,9 @@ public class ImageService {
   public Response<ImageResponse> uploadImage(String username, String password, MultipartFile image)
       throws IOException {
     if (isValidUser(username, password)) {
-      ImageUploadResponse imageUploadResponse = imgurApiClient.uploadImage(image);
-      if (imageUploadResponse != null) {
-        ImageEntity savedImage = saveImageData(imageUploadResponse, username);
+      ImgurResponse<ImgurData> imgurResponse = imgurApiClient.uploadImage(image);
+      if (imgurResponse != null) {
+        ImageEntity savedImage = saveImageData(imgurResponse, username);
         return getApiResponse(toImageResponse(savedImage));
       }
       LOG.error("Image upload failed");
@@ -49,17 +51,8 @@ public class ImageService {
     throw new UserNotFoundException("Unable to find registered user to upload image");
   }
 
-  private ImageEntity saveImageData(ImageUploadResponse imageUploadResponse, String username) {
-    ImageData imageData = imageUploadResponse.getData();
-    ImageEntity imageEntity =
-        new ImageEntity(
-            imageData.getImageHash(), imageData.getDeleteHash(), imageData.getImageUrl(), username);
-    return imageRepository.save(imageEntity);
-  }
-
   public Response<UserImage> getUserImages(UserRequest request) throws UserNotFoundException {
-    UserEntity foundUser = userService.readUserFromDb(request);
-    assert foundUser != null;
+    UserEntity foundUser = validateAndGetUser(request);
     List<ImageEntity> allImages = imageRepository.findAllByUsername(foundUser.getUsername());
     List<ImageResponse> images = allImages.stream().map(this::toImageResponse).toList();
     UserImage userImage =
@@ -67,11 +60,63 @@ public class ImageService {
     return getApiResponse(userImage);
   }
 
+  public Response<UserImage> getUserImage(String username, String password, String imageHash)
+      throws UserNotFoundException, ImageNotFoundException {
+    UserEntity foundUser = validateAndGetUser(username, password);
+    ImgurResponse<ImgurData> imgurResponse = imgurApiClient.viewImage(imageHash);
+
+    if (imgurResponse != null) {
+      UserImage userImage =
+          UserImage.builder()
+              .user(userService.toUserResponse(foundUser))
+              .images(Collections.singletonList(toImageResponse(imgurResponse)))
+              .build();
+      return getApiResponse(userImage);
+    }
+
+    LOG.warn("Unable to find image for given hash: {}", imageHash);
+    throw new ImageNotFoundException("Unable to find image");
+  }
+
+  private UserEntity validateAndGetUser(UserRequest request) throws UserNotFoundException {
+    return validateAndGetUser(request.getUsername(), request.getPassword());
+  }
+
+  private UserEntity validateAndGetUser(String username, String password)
+      throws UserNotFoundException {
+    if (!isValidUser(username, password)) {
+      throw new UserNotFoundException("Unable to find user");
+    }
+
+    UserEntity foundUser = userService.readUserFromDb(username, password);
+    assert foundUser != null;
+    return foundUser;
+  }
+
+  private ImageEntity saveImageData(ImgurResponse<ImgurData> imgurResponse, String username) {
+    ImgurData imgurData = imgurResponse.getData();
+    ImageEntity imageEntity =
+        new ImageEntity(
+            imgurData.getImageHash(), imgurData.getDeleteHash(), imgurData.getImageUrl(), username);
+    return imageRepository.save(imageEntity);
+  }
+
   private ImageResponse toImageResponse(ImageEntity imageEntity) {
+    return toImageResponse(
+        imageEntity.getImageHash(), imageEntity.getDeleteHash(), imageEntity.getImageUrl());
+  }
+
+  private ImageResponse toImageResponse(ImgurResponse<ImgurData> imgurResponse) {
+    ImgurData imgurData = imgurResponse.getData();
+    return toImageResponse(
+        imgurData.getImageHash(), imgurData.getDeleteHash(), imgurData.getImageUrl());
+  }
+
+  private ImageResponse toImageResponse(String imageHash, String deleteHash, String imageUrl) {
     return ImageResponse.builder()
-        .imageHash(imageEntity.getImageHash())
-        .deleteHash(imageEntity.getDeleteHash())
-        .imageUrl(imageEntity.getImageUrl())
+        .imageHash(imageHash)
+        .deleteHash(deleteHash)
+        .imageUrl(imageUrl)
         .build();
   }
 

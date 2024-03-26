@@ -15,8 +15,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 @NoArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
-public class ImageUploadResponse implements Serializable {
+public class ImgurResponse<T> implements Serializable {
   private int status;
   private boolean success;
-  private ImageData data;
+  private T data;
 }

@@ -1,5 +1,6 @@
 package com.skushwaha.synchrony.project.controller;
 
+import com.skushwaha.synchrony.project.exception.ImageNotFoundException;
 import com.skushwaha.synchrony.project.exception.UserNotFoundException;
 import com.skushwaha.synchrony.project.request.UserRequest;
 import com.skushwaha.synchrony.project.response.Response;
@@ -36,10 +37,11 @@ public class ImageReadController {
 
   @PostMapping(path = "/get-image")
   @PreAuthorize("hasAuthority('SCOPE_read')")
-  public String getImage(
+  public Response<UserImage> getImage(
       final @RequestPart("username") String username,
       final @RequestPart("password") String password,
-      final @RequestPart("imageHash") String imageHash) {
-    return "Access granted: user updated successfully";
+      final @RequestPart("imageHash") String imageHash)
+      throws UserNotFoundException, ImageNotFoundException {
+    return imageService.getUserImage(username, password, imageHash);
   }
 }
