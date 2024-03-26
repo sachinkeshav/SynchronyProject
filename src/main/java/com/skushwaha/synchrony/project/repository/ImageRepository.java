@@ -6,6 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
   List<ImageEntity> findAllByUsername(String username);
-
-  ImageEntity findByImageHashAndUsername(String imageHash, String username);
 }
