@@ -71,8 +71,9 @@ public class ImgurApiClient {
   }
 
   public ImgurResponse<ImgurData> viewImage(String imageHash) {
+    String accessToken = getAccessToken();
     HttpHeaders headers = new HttpHeaders();
-    headers.set("Client-ID ", propertyValue.getClientId());
+    headers.setBearerAuth(accessToken);
     HttpEntity<String> entity = new HttpEntity<>(headers);
     String imageViewUrl = propertyValue.getImageUrl() + "/" + imageHash;
     ResponseEntity<ImgurResponse<ImgurData>> viewResponse =
