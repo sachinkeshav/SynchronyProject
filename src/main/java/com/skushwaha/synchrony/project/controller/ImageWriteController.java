@@ -1,5 +1,7 @@
 package com.skushwaha.synchrony.project.controller;
 
+import com.skushwaha.synchrony.project.exception.ImageNotFoundException;
+import com.skushwaha.synchrony.project.exception.UserNotFoundException;
 import com.skushwaha.synchrony.project.response.ImageResponse;
 import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.service.ImageService;
@@ -39,10 +41,11 @@ public class ImageWriteController {
 
   @DeleteMapping(path = "/delete-image")
   @PreAuthorize("hasAuthority('SCOPE_write')")
-  public String deleteImage(
+  public Response<String> deleteImage(
       final @RequestPart("username") String username,
       final @RequestPart("password") String password,
-      final @RequestPart("imageHash") String imageHash) {
-    return "Access granted: image deleted";
+      final @RequestPart("imageHash") String imageHash)
+      throws UserNotFoundException, ImageNotFoundException {
+    return imageService.deleteImage(username, password, imageHash);
   }
 }

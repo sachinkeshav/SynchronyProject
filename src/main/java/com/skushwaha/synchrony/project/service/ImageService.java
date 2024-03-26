@@ -78,6 +78,19 @@ public class ImageService {
     throw new ImageNotFoundException("Unable to find image");
   }
 
+  public Response<String> deleteImage(String username, String password, String imageHash)
+      throws UserNotFoundException, ImageNotFoundException {
+    UserEntity ignored = validateAndGetUser(username, password);
+    ImgurResponse<Boolean> imgurResponse = imgurApiClient.deleteImage(imageHash);
+
+    if (imgurResponse != null) {
+      return new Response<>(200, true, "Image deleted");
+    }
+
+    LOG.warn("Unable to delete image for given hash: {}", imageHash);
+    throw new ImageNotFoundException("Unable to delete image");
+  }
+
   private UserEntity validateAndGetUser(UserRequest request) throws UserNotFoundException {
     return validateAndGetUser(request.getUsername(), request.getPassword());
   }
