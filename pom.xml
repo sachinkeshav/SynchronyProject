@@ -42,6 +42,12 @@
       <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <scope>provided</scope>
+      <version>1.18.30</version>
+    </dependency>
+    <dependency>
       <artifactId>h2</artifactId>
       <groupId>com.h2database</groupId>
       <scope>runtime</scope>

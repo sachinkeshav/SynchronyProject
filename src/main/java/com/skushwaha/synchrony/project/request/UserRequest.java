@@ -1,59 +1,15 @@
 package com.skushwaha.synchrony.project.request;
 
-import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.Objects;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
+@Getter
+@ToString
+@RequiredArgsConstructor
 public class UserRequest implements Serializable {
-  @NotBlank(message = "Username cannot be blank")
-  private String username;
-
-  @NotBlank(message = "Password can not be blank")
-  private String password;
-
-  public UserRequest(String username, String password) {
-    this.username = username;
-    this.password = password;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  @Override
-  public String toString() {
-    return "UserReadRequest{"
-        + "username='"
-        + username
-        + '\''
-        + ", password='"
-        + password
-        + '\''
-        + '}';
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    UserRequest that = (UserRequest) o;
-    return Objects.equals(username, that.username) && Objects.equals(password, that.password);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(username, password);
-  }
+  private final @NonNull String username;
+  private final @NonNull String password;
 }

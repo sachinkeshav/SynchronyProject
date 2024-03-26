@@ -62,12 +62,17 @@ public class ImageService {
     assert foundUser != null;
     List<ImageEntity> allImages = imageRepository.findAllByUsername(foundUser.getUsername());
     List<ImageResponse> images = allImages.stream().map(this::toImageResponse).toList();
-    return getApiResponse(new UserImage(userService.toUserResponse(foundUser), images));
+    UserImage userImage =
+        UserImage.builder().user(userService.toUserResponse(foundUser)).images(images).build();
+    return getApiResponse(userImage);
   }
 
   private ImageResponse toImageResponse(ImageEntity imageEntity) {
-    return new ImageResponse(
-        imageEntity.getImageHash(), imageEntity.getDeleteHash(), imageEntity.getImageUrl());
+    return ImageResponse.builder()
+        .imageHash(imageEntity.getImageHash())
+        .deleteHash(imageEntity.getDeleteHash())
+        .imageUrl(imageEntity.getImageUrl())
+        .build();
   }
 
   private Response<UserImage> getApiResponse(UserImage userImage) {

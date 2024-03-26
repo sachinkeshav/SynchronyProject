@@ -29,16 +29,15 @@ public class UserService {
 
   public Response<UserResponse> registerUser(UserRegistrationRequest request)
       throws UserAlreadyExistException {
-    if (checkIfUserExist(request.getEmail())) {
-      LOG.error("User already exists for this email. Registration request: {}", request);
-      throw new UserAlreadyExistException("User already exists for this email");
-    }
+    validateNewUser(request);
 
     UserEntity userEntity = new UserEntity();
     BeanUtils.copyProperties(request, userEntity);
     userEntity.setPassword(encodePassword(request.getPassword()));
+
+    LOG.debug("Saving the user: {}", userEntity);
+
     UserEntity savedUser = userRepository.save(userEntity);
-    LOG.info("saved user: {}", savedUser);
     return getApiResponse(toUserResponse(savedUser));
   }
 
@@ -78,20 +77,46 @@ public class UserService {
   }
 
   public UserResponse toUserResponse(UserEntity userEntity) {
-    return new UserResponse(
-        userEntity.getUsername(),
-        userEntity.getFirstName(),
-        userEntity.getLastName(),
-        userEntity.getEmail(),
-        userEntity.getPhone());
+    return UserResponse.builder()
+        .username(userEntity.getUsername())
+        .firstName(userEntity.getFirstName())
+        .lastName(userEntity.getLastName())
+        .email(userEntity.getEmail())
+        .phone(userEntity.getPhone())
+        .build();
+  }
+
+  private void validateNewUser(UserRegistrationRequest request) throws UserAlreadyExistException {
+    if (checkIfUserExistForUsername(request.getUsername())) {
+      LOG.error("User already exists for this username. Registration request: {}", request);
+      throw new UserAlreadyExistException("User already exists for this username");
+    }
+
+    if (checkIfUserExistForEmail(request.getEmail())) {
+      LOG.error("User already exists for this email. Registration request: {}", request);
+      throw new UserAlreadyExistException("User already exists for this email");
+    }
+
+    if (checkIfUserExistForPhone(request.getPhone())) {
+      LOG.error("User already exists for this phone. Registration request: {}", request);
+      throw new UserAlreadyExistException("User already exists for this phone");
+    }
   }
 
   private Response<UserResponse> getApiResponse(UserResponse userResponse) {
     return new Response<>(200, true, userResponse);
   }
 
-  private boolean checkIfUserExist(String email) {
+  private boolean checkIfUserExistForUsername(String username) {
+    return userRepository.findByUsername(username) != null;
+  }
+
+  private boolean checkIfUserExistForEmail(String email) {
     return userRepository.findByEmail(email) != null;
+  }
+
+  private boolean checkIfUserExistForPhone(String phone) {
+    return userRepository.findByPhone(phone) != null;
   }
 
   private String encodePassword(String password) {
