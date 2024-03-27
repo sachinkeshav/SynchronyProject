@@ -54,4 +54,22 @@ public class PropertyValue {
 
   @Value("${imgur.default.phone}")
   private String phone;
+
+  @Value("${imgur.sample.username}")
+  private String sampleUsername;
+
+  @Value("${imgur.sample.password}")
+  private String samplePassword;
+
+  @Value("${imgur.sample.firstname}")
+  private String sampleFirstName;
+
+  @Value("${imgur.sample.lastname}")
+  private String sampleLastName;
+
+  @Value("${imgur.sample.email}")
+  private String sampleEmail;
+
+  @Value("${imgur.sample.phone}")
+  private String samplePhone;
 }

@@ -14,3 +14,10 @@ imgur:
     lastname: root
     email: root@synchrony-project.com
     phone: 1234567890
+  sample:
+    username: joe.approval
+    password: '{bcrypt}$2a$10$poqsduBL8GFQtfUCTZhyu.N1c8R27VxighDPXOF.0DQ38AwARSveC'
+    firstname: joe
+    lastname: approval
+    email: joe.approval@synchrony-project.com
+    phone: 1234567891

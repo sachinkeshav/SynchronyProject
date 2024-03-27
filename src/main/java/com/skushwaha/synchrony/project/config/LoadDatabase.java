@@ -34,7 +34,7 @@ public class LoadDatabase {
               propertyValue.getDefaultRefreshToken(),
               propertyValue.getDefaultExpiresIn(),
               System.currentTimeMillis()));
-      UserEntity user =
+      UserEntity root =
           userRepository.save(
               new UserEntity(
                   propertyValue.getUsername(),
@@ -44,6 +44,16 @@ public class LoadDatabase {
                   propertyValue.getEmail(),
                   propertyValue.getPhone(),
                   UserRole.ADMIN));
+      UserEntity user =
+          userRepository.save(
+              new UserEntity(
+                  propertyValue.getSampleUsername(),
+                  propertyValue.getSamplePassword(),
+                  propertyValue.getSampleFirstName(),
+                  propertyValue.getSampleLastName(),
+                  propertyValue.getSampleEmail(),
+                  propertyValue.getSamplePhone(),
+                  UserRole.USER));
       imageRepository.save(
           new ImageEntity(
               "PRUIA7z",
@@ -51,7 +61,7 @@ public class LoadDatabase {
               "https://i.imgur.com/PRUIA7z.jpeg",
               "Sample upload",
               "This is sample upload",
-              user.getUsername()));
+              root.getUsername()));
       imageRepository.save(
           new ImageEntity(
               "fT0wf4m",
@@ -59,7 +69,7 @@ public class LoadDatabase {
               "https://i.imgur.com/fT0wf4m.jpeg",
               "Sample upload",
               "This is sample upload",
-              user.getUsername()));
+              root.getUsername()));
       imageRepository.save(
           new ImageEntity(
               "IgQ8F7V",
