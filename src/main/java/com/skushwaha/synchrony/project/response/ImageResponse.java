@@ -13,4 +13,6 @@ public class ImageResponse implements Serializable {
   private String imageHash;
   private String deleteHash;
   private String imageUrl;
+  private String title;
+  private String description;
 }

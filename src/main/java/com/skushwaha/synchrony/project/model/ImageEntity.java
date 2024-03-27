@@ -29,13 +29,27 @@ public class ImageEntity {
   @Column(name = "image_url", nullable = false)
   private String imageUrl;
 
+  @Column(name = "title", nullable = false)
+  private String title;
+
+  @Column(name = "description", nullable = false)
+  private String description;
+
   @Column(name = "username", nullable = false)
   private String username;
 
-  public ImageEntity(String imageHash, String deleteHash, String imageUrl, String username) {
+  public ImageEntity(
+      String imageHash,
+      String deleteHash,
+      String imageUrl,
+      String title,
+      String description,
+      String username) {
     this.imageHash = imageHash;
     this.deleteHash = deleteHash;
     this.imageUrl = imageUrl;
+    this.title = title;
+    this.description = description;
     this.username = username;
   }
 }

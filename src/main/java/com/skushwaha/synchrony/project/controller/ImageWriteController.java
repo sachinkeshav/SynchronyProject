@@ -35,9 +35,11 @@ public class ImageWriteController {
   public Response<ImageResponse> uploadImage(
       final @RequestPart("username") String username,
       final @RequestPart("password") String password,
-      final @RequestPart("image") MultipartFile image)
+      final @RequestPart("image") MultipartFile image,
+      final @RequestPart("title") String title,
+      final @RequestPart("description") String description)
       throws IOException {
-    return imageService.uploadImage(username, password, image);
+    return imageService.uploadImage(username, password, image, title, description);
   }
 
   @DeleteMapping(path = "/delete-image")

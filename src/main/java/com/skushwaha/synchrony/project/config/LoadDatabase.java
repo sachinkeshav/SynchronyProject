@@ -49,30 +49,40 @@ public class LoadDatabase {
               "PRUIA7z",
               "aMimEJomzFkRTzg",
               "https://i.imgur.com/PRUIA7z.jpeg",
+              "Sample upload",
+              "This is sample upload",
               user.getUsername()));
       imageRepository.save(
           new ImageEntity(
               "fT0wf4m",
               "qqOQ7X4VTCJDjqj",
               "https://i.imgur.com/fT0wf4m.jpeg",
+              "Sample upload",
+              "This is sample upload",
               user.getUsername()));
       imageRepository.save(
           new ImageEntity(
               "IgQ8F7V",
               "InRc5BwnincI05F",
               "https://i.imgur.com/IgQ8F7V.jpeg",
+              "Sample upload",
+              "This is sample upload",
               user.getUsername()));
       imageRepository.save(
           new ImageEntity(
               "QCryb56",
               "Pc6xU5qklCYGI71",
               "https://i.imgur.com/QCryb56.jpeg",
+              "Sample upload",
+              "This is sample upload",
               user.getUsername()));
       imageRepository.save(
           new ImageEntity(
               "57t1CyH",
               "wdtHDVYM3Cbxvpj",
               "https://i.imgur.com/57t1CyH.jpeg",
+              "Sample upload",
+              "This is sample upload",
               user.getUsername()));
     };
   }

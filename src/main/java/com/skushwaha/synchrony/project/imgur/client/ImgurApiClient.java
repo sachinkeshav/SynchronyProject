@@ -44,7 +44,8 @@ public class ImgurApiClient {
         new DefaultUriBuilderFactory(propertyValue.getBaseUri()));
   }
 
-  public ImgurResponse<ImgurData> uploadImage(MultipartFile image) throws IOException {
+  public ImgurResponse<ImgurData> uploadImage(MultipartFile image, String title, String description)
+      throws IOException {
     String accessToken = getAccessToken();
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -53,8 +54,8 @@ public class ImgurApiClient {
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
     body.set("image", Base64.getEncoder().encode(image.getBytes()));
     body.set("type", "base64");
-    body.set("title", "Sample upload");
-    body.set("description", "This is sample upload");
+    body.set("title", title);
+    body.set("description", description);
 
     HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(body, headers);
 

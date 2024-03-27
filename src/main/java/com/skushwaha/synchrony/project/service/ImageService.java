@@ -37,10 +37,12 @@ public class ImageService {
     this.imgurApiClient = imgurApiClient;
   }
 
-  public Response<ImageResponse> uploadImage(String username, String password, MultipartFile image)
+  public Response<ImageResponse> uploadImage(
+      String username, String password, MultipartFile image, String title, String description)
       throws IOException {
     if (isValidUser(username, password)) {
-      ImgurResponse<ImgurData> imgurResponse = imgurApiClient.uploadImage(image);
+      ImgurResponse<ImgurData> imgurResponse =
+          imgurApiClient.uploadImage(image, title, description);
       if (imgurResponse != null) {
         ImageEntity savedImage = saveImageData(imgurResponse, username);
         return getApiResponse(toImageResponse(savedImage));
@@ -112,26 +114,42 @@ public class ImageService {
     ImgurData imgurData = imgurResponse.getData();
     ImageEntity imageEntity =
         new ImageEntity(
-            imgurData.getImageHash(), imgurData.getDeleteHash(), imgurData.getImageUrl(), username);
+            imgurData.getImageHash(),
+            imgurData.getDeleteHash(),
+            imgurData.getImageUrl(),
+            imgurData.getTitle(),
+            imgurData.getDescription(),
+            username);
     return imageRepository.save(imageEntity);
   }
 
   private ImageResponse toImageResponse(ImageEntity imageEntity) {
     return toImageResponse(
-        imageEntity.getImageHash(), imageEntity.getDeleteHash(), imageEntity.getImageUrl());
+        imageEntity.getImageHash(),
+        imageEntity.getDeleteHash(),
+        imageEntity.getImageUrl(),
+        imageEntity.getTitle(),
+        imageEntity.getDescription());
   }
 
   private ImageResponse toImageResponse(ImgurResponse<ImgurData> imgurResponse) {
     ImgurData imgurData = imgurResponse.getData();
     return toImageResponse(
-        imgurData.getImageHash(), imgurData.getDeleteHash(), imgurData.getImageUrl());
+        imgurData.getImageHash(),
+        imgurData.getDeleteHash(),
+        imgurData.getImageUrl(),
+        imgurData.getTitle(),
+        imgurData.getDescription());
   }
 
-  private ImageResponse toImageResponse(String imageHash, String deleteHash, String imageUrl) {
+  private ImageResponse toImageResponse(
+      String imageHash, String deleteHash, String imageUrl, String title, String description) {
     return ImageResponse.builder()
         .imageHash(imageHash)
         .deleteHash(deleteHash)
         .imageUrl(imageUrl)
+        .title(title)
+        .description(description)
         .build();
   }
 
