@@ -8,16 +8,15 @@ import com.skushwaha.synchrony.project.request.UserReadRequest;
 import com.skushwaha.synchrony.project.request.UserRegisterRequest;
 import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.response.UserResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class UserService {
-  private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
 
@@ -35,7 +34,7 @@ public class UserService {
     BeanUtils.copyProperties(request, userEntity);
     userEntity.setPassword(encodePassword(request.getPassword()));
 
-    LOG.debug("Saving the user: {}", userEntity);
+    log.debug("Saving the user: {}", userEntity);
 
     UserEntity savedUser = userRepository.save(userEntity);
     return getApiResponse(toUserResponse(savedUser));
@@ -61,7 +60,7 @@ public class UserService {
   public UserEntity readUserFromDb(String username, String password) throws UserNotFoundException {
     UserEntity userEntity = userRepository.findByUsername(username);
     if (userEntity == null) {
-      LOG.warn("Unable to find user with given username {}", username);
+      log.warn("Unable to find user with given username {}", username);
       throw new UserNotFoundException("Unable to find user");
     }
 
@@ -69,7 +68,7 @@ public class UserService {
       return userEntity;
     }
 
-    LOG.warn(
+    log.warn(
         "Unable to find user with given username and password combination. Username: {}, Password: {}",
         username,
         password);
@@ -88,17 +87,17 @@ public class UserService {
 
   private void validateNewUser(UserRegisterRequest request) throws UserAlreadyExistException {
     if (checkIfUserExistForUsername(request.getUsername())) {
-      LOG.warn("User already exists for this username. Registration request: {}", request);
+      log.warn("User already exists for this username. Registration request: {}", request);
       throw new UserAlreadyExistException("User already exists for this username");
     }
 
     if (checkIfUserExistForEmail(request.getEmail())) {
-      LOG.warn("User already exists for this email. Registration request: {}", request);
+      log.warn("User already exists for this email. Registration request: {}", request);
       throw new UserAlreadyExistException("User already exists for this email");
     }
 
     if (checkIfUserExistForPhone(request.getPhone())) {
-      LOG.warn("User already exists for this phone. Registration request: {}", request);
+      log.warn("User already exists for this phone. Registration request: {}", request);
       throw new UserAlreadyExistException("User already exists for this phone");
     }
   }

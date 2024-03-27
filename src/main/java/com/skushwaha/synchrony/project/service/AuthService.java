@@ -11,15 +11,14 @@ import com.skushwaha.synchrony.project.repository.AuthRepository;
 import com.skushwaha.synchrony.project.request.TokenRequest;
 import com.skushwaha.synchrony.project.request.UserReadRequest;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class AuthService {
-  private static final Logger LOG = LoggerFactory.getLogger(AuthService.class);
   private final AuthRepository authRepository;
   private final PropertyValue propertyValue;
   private final UserService userService;
@@ -43,7 +42,7 @@ public class AuthService {
       return tokenResponse;
     }
 
-    LOG.warn("User not authorized to view credential");
+    log.warn("User not authorized to view credential");
     throw new UserNotAuthorizedException("User not authorized to view credential");
   }
 

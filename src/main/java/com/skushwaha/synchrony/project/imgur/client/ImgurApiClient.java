@@ -9,8 +9,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Objects;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,9 +26,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
+@Slf4j
 @Component
 public class ImgurApiClient {
-  private static final Logger LOG = LoggerFactory.getLogger(ImgurApiClient.class);
   private final RestTemplate restTemplate;
   private final PropertyValue propertyValue;
   private final AuthService authService;
@@ -67,7 +66,7 @@ public class ImgurApiClient {
             new ParameterizedTypeReference<>() {});
     assert uploadResponse.getStatusCode() == HttpStatus.OK;
 
-    LOG.info("Image upload response: {} ", uploadResponse.getBody());
+    log.info("Image upload response: {} ", uploadResponse.getBody());
     return uploadResponse.getBody();
   }
 
@@ -82,7 +81,7 @@ public class ImgurApiClient {
             imageViewUrl, HttpMethod.GET, entity, new ParameterizedTypeReference<>() {});
     assert viewResponse.getStatusCode() == HttpStatus.OK;
 
-    LOG.info("Image view response: {} ", viewResponse.getBody());
+    log.info("Image view response: {} ", viewResponse.getBody());
     return viewResponse.getBody();
   }
 
@@ -97,14 +96,14 @@ public class ImgurApiClient {
             imageDeleteUrl, HttpMethod.DELETE, entity, new ParameterizedTypeReference<>() {});
     assert deleteResponse.getStatusCode() == HttpStatus.OK;
 
-    LOG.info("Image delete response: {} ", deleteResponse.getBody());
+    log.info("Image delete response: {} ", deleteResponse.getBody());
     return deleteResponse.getBody();
   }
 
   private String getAccessToken() {
     Optional<String> accessToken = authService.getAccessToken();
     if (accessToken.isEmpty()) {
-      LOG.warn("Either access_token is null or invalid. Refreshing the token.");
+      log.warn("Either access_token is null or invalid. Refreshing the token.");
       refreshToken(authService.getRefreshToken());
       accessToken = authService.getAccessToken();
     }

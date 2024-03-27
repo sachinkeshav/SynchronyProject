@@ -5,8 +5,7 @@ import com.skushwaha.synchrony.project.request.UserReadRequest;
 import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.response.UserResponse;
 import com.skushwaha.synchrony.project.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/v1/user-reads")
 public class UserReadController {
-  private static final Logger LOG = LoggerFactory.getLogger(UserReadController.class);
   private final UserService userService;
 
   @Autowired
@@ -29,7 +28,7 @@ public class UserReadController {
   @PreAuthorize("hasAuthority('SCOPE_read')")
   public Response<UserResponse> getUser(final @RequestBody UserReadRequest request)
       throws UserNotFoundException {
-    LOG.debug("User read request: {}", request);
+    log.debug("User read request: {}", request);
     return userService.readUser(request);
   }
 }

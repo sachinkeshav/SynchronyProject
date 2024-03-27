@@ -7,16 +7,14 @@ import com.skushwaha.synchrony.project.model.UserRole;
 import com.skushwaha.synchrony.project.repository.AuthRepository;
 import com.skushwaha.synchrony.project.repository.ImageRepository;
 import com.skushwaha.synchrony.project.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Slf4j
 @Configuration
 public class LoadDatabase {
-  private static final Logger LOG = LoggerFactory.getLogger(LoadDatabase.class);
-
   @Bean
   CommandLineRunner initDatabase(
       PropertyValue propertyValue,
@@ -25,7 +23,7 @@ public class LoadDatabase {
       AuthRepository authRepository) {
 
     return args -> {
-      LOG.info("Preloading database");
+      log.info("Preloading database");
       authRepository.save(
           new AuthEntity(
               propertyValue.getClientId(),

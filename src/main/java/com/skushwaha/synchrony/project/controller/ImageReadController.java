@@ -7,8 +7,7 @@ import com.skushwaha.synchrony.project.request.UserReadRequest;
 import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.response.UserImage;
 import com.skushwaha.synchrony.project.service.ImageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/v1/image-reads")
 public class ImageReadController {
-  private static final Logger LOG = LoggerFactory.getLogger(ImageReadController.class);
   private final ImageService imageService;
 
   @Autowired
@@ -31,7 +30,7 @@ public class ImageReadController {
   @PreAuthorize("hasAuthority('SCOPE_read')")
   public Response<UserImage> getAllImageForUser(final @RequestBody UserReadRequest request)
       throws UserNotFoundException {
-    LOG.debug("User request for all image: {}", request);
+    log.debug("User request for all image: {}", request);
     return imageService.getUserImages(request);
   }
 
@@ -39,7 +38,7 @@ public class ImageReadController {
   @PreAuthorize("hasAuthority('SCOPE_read')")
   public Response<UserImage> getImage(final @RequestBody UserImageRequest request)
       throws UserNotFoundException, ImageNotFoundException {
-    LOG.debug("Single image read request: {}", request);
+    log.debug("Single image read request: {}", request);
     return imageService.getUserImage(request);
   }
 }

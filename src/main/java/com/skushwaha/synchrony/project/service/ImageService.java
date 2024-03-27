@@ -16,15 +16,14 @@ import com.skushwaha.synchrony.project.response.UserImage;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 public class ImageService {
-  private static final Logger LOG = LoggerFactory.getLogger(ImageService.class);
   private final ImageRepository imageRepository;
   private final UserService userService;
   private final ImgurApiClient imgurApiClient;
@@ -47,10 +46,10 @@ public class ImageService {
         ImageEntity savedImage = saveImageData(imgurResponse, username);
         return getApiResponse(toImageResponse(savedImage));
       }
-      LOG.error("Image upload failed");
+      log.error("Image upload failed");
       throw new RuntimeException("Image upload failed");
     }
-    LOG.warn("Unable to find registered user to upload image");
+    log.warn("Unable to find registered user to upload image");
     throw new UserNotFoundException("Unable to find registered user to upload image");
   }
 
@@ -77,7 +76,7 @@ public class ImageService {
       return getApiResponse(userImage);
     }
 
-    LOG.warn("Unable to find image for given hash: {}", request.getImageHash());
+    log.warn("Unable to find image for given hash: {}", request.getImageHash());
     throw new ImageNotFoundException("Unable to find image");
   }
 
@@ -91,7 +90,7 @@ public class ImageService {
       return new Response<>(200, true, "Image deleted");
     }
 
-    LOG.warn("Unable to delete image for given hash: {}", request.getImageHash());
+    log.warn("Unable to delete image for given hash: {}", request.getImageHash());
     throw new ImageNotFoundException("Unable to delete image");
   }
 
