@@ -4,8 +4,8 @@ import com.skushwaha.synchrony.project.exception.UserAlreadyExistException;
 import com.skushwaha.synchrony.project.exception.UserNotFoundException;
 import com.skushwaha.synchrony.project.model.UserEntity;
 import com.skushwaha.synchrony.project.repository.UserRepository;
-import com.skushwaha.synchrony.project.request.UserRegistrationRequest;
-import com.skushwaha.synchrony.project.request.UserRequest;
+import com.skushwaha.synchrony.project.request.UserReadRequest;
+import com.skushwaha.synchrony.project.request.UserRegisterRequest;
 import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.response.UserResponse;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public Response<UserResponse> registerUser(UserRegistrationRequest request)
+  public Response<UserResponse> registerUser(UserRegisterRequest request)
       throws UserAlreadyExistException {
     validateNewUser(request);
 
@@ -41,11 +41,11 @@ public class UserService {
     return getApiResponse(toUserResponse(savedUser));
   }
 
-  public Response<UserResponse> readUser(UserRequest request) throws UserNotFoundException {
+  public Response<UserResponse> readUser(UserReadRequest request) throws UserNotFoundException {
     return getApiResponse(getUserResponse(request));
   }
 
-  public UserResponse getUserResponse(UserRequest request) throws UserNotFoundException {
+  public UserResponse getUserResponse(UserReadRequest request) throws UserNotFoundException {
     return getUserResponse(request.getUsername(), request.getPassword());
   }
 
@@ -54,7 +54,7 @@ public class UserService {
     return toUserResponse(readUserFromDb(username, password));
   }
 
-  public UserEntity readUserFromDb(UserRequest request) throws UserNotFoundException {
+  public UserEntity readUserFromDb(UserReadRequest request) throws UserNotFoundException {
     return readUserFromDb(request.getUsername(), request.getPassword());
   }
 
@@ -86,7 +86,7 @@ public class UserService {
         .build();
   }
 
-  private void validateNewUser(UserRegistrationRequest request) throws UserAlreadyExistException {
+  private void validateNewUser(UserRegisterRequest request) throws UserAlreadyExistException {
     if (checkIfUserExistForUsername(request.getUsername())) {
       LOG.warn("User already exists for this username. Registration request: {}", request);
       throw new UserAlreadyExistException("User already exists for this username");

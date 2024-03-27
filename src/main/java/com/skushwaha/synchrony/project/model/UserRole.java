@@ -1,6 +1,6 @@
 package com.skushwaha.synchrony.project.model;
 
-public enum Role {
+public enum UserRole {
   ADMIN,
   USER
 }

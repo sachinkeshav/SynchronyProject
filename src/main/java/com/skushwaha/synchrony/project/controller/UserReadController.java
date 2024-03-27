@@ -1,7 +1,7 @@
 package com.skushwaha.synchrony.project.controller;
 
 import com.skushwaha.synchrony.project.exception.UserNotFoundException;
-import com.skushwaha.synchrony.project.request.UserRequest;
+import com.skushwaha.synchrony.project.request.UserReadRequest;
 import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.response.UserResponse;
 import com.skushwaha.synchrony.project.service.UserService;
@@ -27,9 +27,9 @@ public class UserReadController {
 
   @PostMapping(path = "/get-user")
   @PreAuthorize("hasAuthority('SCOPE_read')")
-  public Response<UserResponse> getUser(final @RequestBody UserRequest readRequest)
+  public Response<UserResponse> getUser(final @RequestBody UserReadRequest request)
       throws UserNotFoundException {
-    LOG.debug("User read request: {}", readRequest);
-    return userService.readUser(readRequest);
+    LOG.debug("User read request: {}", request);
+    return userService.readUser(request);
   }
 }

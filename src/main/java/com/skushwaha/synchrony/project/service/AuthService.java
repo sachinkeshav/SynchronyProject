@@ -5,9 +5,11 @@ import com.skushwaha.synchrony.project.exception.UserNotAuthorizedException;
 import com.skushwaha.synchrony.project.exception.UserNotFoundException;
 import com.skushwaha.synchrony.project.imgur.response.TokenResponse;
 import com.skushwaha.synchrony.project.model.AuthEntity;
-import com.skushwaha.synchrony.project.model.Role;
 import com.skushwaha.synchrony.project.model.UserEntity;
+import com.skushwaha.synchrony.project.model.UserRole;
 import com.skushwaha.synchrony.project.repository.AuthRepository;
+import com.skushwaha.synchrony.project.request.TokenRequest;
+import com.skushwaha.synchrony.project.request.UserReadRequest;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +32,11 @@ public class AuthService {
     this.userService = userService;
   }
 
-  public TokenResponse viewCredential(String username, String password)
+  public TokenResponse viewCredential(UserReadRequest request)
       throws UserNotFoundException, UserNotAuthorizedException {
-    UserEntity user = userService.readUserFromDb(username, password);
+    UserEntity user = userService.readUserFromDb(request);
 
-    if (user.getRole() == Role.ADMIN) {
+    if (user.getUserRole() == UserRole.ADMIN) {
       AuthEntity authEntity = readCredentialFromDb();
       TokenResponse tokenResponse = new TokenResponse();
       BeanUtils.copyProperties(authEntity, tokenResponse);
@@ -58,6 +60,10 @@ public class AuthService {
   public String getRefreshToken() {
     AuthEntity credential = readCredentialFromDb();
     return credential.getRefreshToken();
+  }
+
+  public void saveCredential(TokenRequest request) {
+    saveCredential(request.getAccessToken(), request.getRefreshToken(), request.getExpiresIn());
   }
 
   public void saveCredential(TokenResponse tokenResponse) {

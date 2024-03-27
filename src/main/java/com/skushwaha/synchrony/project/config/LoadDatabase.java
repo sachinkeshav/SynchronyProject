@@ -2,8 +2,8 @@ package com.skushwaha.synchrony.project.config;
 
 import com.skushwaha.synchrony.project.model.AuthEntity;
 import com.skushwaha.synchrony.project.model.ImageEntity;
-import com.skushwaha.synchrony.project.model.Role;
 import com.skushwaha.synchrony.project.model.UserEntity;
+import com.skushwaha.synchrony.project.model.UserRole;
 import com.skushwaha.synchrony.project.repository.AuthRepository;
 import com.skushwaha.synchrony.project.repository.ImageRepository;
 import com.skushwaha.synchrony.project.repository.UserRepository;
@@ -43,7 +43,7 @@ public class LoadDatabase {
                   propertyValue.getLastName(),
                   propertyValue.getEmail(),
                   propertyValue.getPhone(),
-                  Role.ADMIN));
+                  UserRole.ADMIN));
       imageRepository.save(
           new ImageEntity("fsdr", "rwerd", "http://dummy.ur/fsdr.img", user.getUsername()));
       imageRepository.save(

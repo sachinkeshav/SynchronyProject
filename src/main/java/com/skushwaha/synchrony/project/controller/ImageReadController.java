@@ -2,7 +2,8 @@ package com.skushwaha.synchrony.project.controller;
 
 import com.skushwaha.synchrony.project.exception.ImageNotFoundException;
 import com.skushwaha.synchrony.project.exception.UserNotFoundException;
-import com.skushwaha.synchrony.project.request.UserRequest;
+import com.skushwaha.synchrony.project.request.UserImageRequest;
+import com.skushwaha.synchrony.project.request.UserReadRequest;
 import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.response.UserImage;
 import com.skushwaha.synchrony.project.service.ImageService;
@@ -13,7 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,19 +29,17 @@ public class ImageReadController {
 
   @PostMapping(path = "/get-all-for-user")
   @PreAuthorize("hasAuthority('SCOPE_read')")
-  public Response<UserImage> getAllImageForUser(final @RequestBody UserRequest request)
+  public Response<UserImage> getAllImageForUser(final @RequestBody UserReadRequest request)
       throws UserNotFoundException {
-    LOG.debug("User request for image: {}", request);
+    LOG.debug("User request for all image: {}", request);
     return imageService.getUserImages(request);
   }
 
   @PostMapping(path = "/get-image")
   @PreAuthorize("hasAuthority('SCOPE_read')")
-  public Response<UserImage> getImage(
-      final @RequestPart("username") String username,
-      final @RequestPart("password") String password,
-      final @RequestPart("imageHash") String imageHash)
+  public Response<UserImage> getImage(final @RequestBody UserImageRequest request)
       throws UserNotFoundException, ImageNotFoundException {
-    return imageService.getUserImage(username, password, imageHash);
+    LOG.debug("Single image read request: {}", request);
+    return imageService.getUserImage(request);
   }
 }

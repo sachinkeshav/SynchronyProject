@@ -8,7 +8,8 @@ import com.skushwaha.synchrony.project.imgur.response.ImgurResponse;
 import com.skushwaha.synchrony.project.model.ImageEntity;
 import com.skushwaha.synchrony.project.model.UserEntity;
 import com.skushwaha.synchrony.project.repository.ImageRepository;
-import com.skushwaha.synchrony.project.request.UserRequest;
+import com.skushwaha.synchrony.project.request.UserImageRequest;
+import com.skushwaha.synchrony.project.request.UserReadRequest;
 import com.skushwaha.synchrony.project.response.ImageResponse;
 import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.response.UserImage;
@@ -51,7 +52,7 @@ public class ImageService {
     throw new UserNotFoundException("Unable to find registered user to upload image");
   }
 
-  public Response<UserImage> getUserImages(UserRequest request) throws UserNotFoundException {
+  public Response<UserImage> getUserImages(UserReadRequest request) throws UserNotFoundException {
     UserEntity foundUser = validateAndGetUser(request);
     List<ImageEntity> allImages = imageRepository.findAllByUsername(foundUser.getUsername());
     List<ImageResponse> images = allImages.stream().map(this::toImageResponse).toList();
@@ -60,10 +61,10 @@ public class ImageService {
     return getApiResponse(userImage);
   }
 
-  public Response<UserImage> getUserImage(String username, String password, String imageHash)
+  public Response<UserImage> getUserImage(UserImageRequest request)
       throws UserNotFoundException, ImageNotFoundException {
-    UserEntity foundUser = validateAndGetUser(username, password);
-    ImgurResponse<ImgurData> imgurResponse = imgurApiClient.viewImage(imageHash);
+    UserEntity foundUser = validateAndGetUser(request.getUsername(), request.getPassword());
+    ImgurResponse<ImgurData> imgurResponse = imgurApiClient.viewImage(request.getImageHash());
 
     if (imgurResponse != null) {
       UserImage userImage =
@@ -74,25 +75,25 @@ public class ImageService {
       return getApiResponse(userImage);
     }
 
-    LOG.warn("Unable to find image for given hash: {}", imageHash);
+    LOG.warn("Unable to find image for given hash: {}", request.getImageHash());
     throw new ImageNotFoundException("Unable to find image");
   }
 
-  public Response<String> deleteImage(String username, String password, String imageHash)
+  public Response<String> deleteImage(UserImageRequest request)
       throws UserNotFoundException, ImageNotFoundException {
-    UserEntity ignored = validateAndGetUser(username, password);
-    ImgurResponse<Boolean> imgurResponse = imgurApiClient.deleteImage(imageHash);
+    UserEntity ignored = validateAndGetUser(request.getUsername(), request.getPassword());
+    ImgurResponse<Boolean> imgurResponse = imgurApiClient.deleteImage(request.getImageHash());
 
     if (imgurResponse != null) {
-      imageRepository.deleteByImageHashAndUsername(imageHash, username);
+      imageRepository.deleteByImageHashAndUsername(request.getImageHash(), request.getUsername());
       return new Response<>(200, true, "Image deleted");
     }
 
-    LOG.warn("Unable to delete image for given hash: {}", imageHash);
+    LOG.warn("Unable to delete image for given hash: {}", request.getImageHash());
     throw new ImageNotFoundException("Unable to delete image");
   }
 
-  private UserEntity validateAndGetUser(UserRequest request) throws UserNotFoundException {
+  private UserEntity validateAndGetUser(UserReadRequest request) throws UserNotFoundException {
     return validateAndGetUser(request.getUsername(), request.getPassword());
   }
 

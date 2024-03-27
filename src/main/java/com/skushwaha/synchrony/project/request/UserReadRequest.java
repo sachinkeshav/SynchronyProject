@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @RequiredArgsConstructor
-public class UserRequest implements Serializable {
+public class UserReadRequest implements Serializable {
   private final @NonNull String username;
   private final @NonNull String password;
 }

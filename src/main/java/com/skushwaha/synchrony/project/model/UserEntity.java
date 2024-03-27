@@ -40,7 +40,7 @@ public class UserEntity {
   private String phone;
 
   @Column(name = "role", nullable = false)
-  private Role role = Role.USER;
+  private UserRole userRole = UserRole.USER;
 
   public UserEntity(
       String username,
@@ -49,13 +49,13 @@ public class UserEntity {
       String lastName,
       String email,
       String phone,
-      Role role) {
+      UserRole userRole) {
     this.username = username;
     this.password = password;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
     this.phone = phone;
-    this.role = role;
+    this.userRole = userRole;
   }
 }

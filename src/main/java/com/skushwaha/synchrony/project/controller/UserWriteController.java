@@ -1,14 +1,13 @@
 package com.skushwaha.synchrony.project.controller;
 
 import com.skushwaha.synchrony.project.exception.UserAlreadyExistException;
-import com.skushwaha.synchrony.project.request.UserRegistrationRequest;
+import com.skushwaha.synchrony.project.request.UserRegisterRequest;
 import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.response.UserResponse;
 import com.skushwaha.synchrony.project.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,11 +23,11 @@ public class UserWriteController {
     this.userService = userService;
   }
 
-  @PostMapping(path = "/register-user", consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/register-user")
   @PreAuthorize("hasAuthority('SCOPE_write')")
-  public Response<UserResponse> registerUser(final @RequestBody UserRegistrationRequest request)
+  public Response<UserResponse> registerUser(final @RequestBody UserRegisterRequest request)
       throws UserAlreadyExistException {
-    LOG.debug("User registration request: {}", request.toString());
+    LOG.debug("User registration request: {}", request);
     return userService.registerUser(request);
   }
 }
