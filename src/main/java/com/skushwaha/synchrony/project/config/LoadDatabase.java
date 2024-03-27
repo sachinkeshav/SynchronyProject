@@ -45,13 +45,35 @@ public class LoadDatabase {
                   propertyValue.getPhone(),
                   UserRole.ADMIN));
       imageRepository.save(
-          new ImageEntity("fsdr", "rwerd", "http://dummy.ur/fsdr.img", user.getUsername()));
+          new ImageEntity(
+              "PRUIA7z",
+              "aMimEJomzFkRTzg",
+              "https://i.imgur.com/PRUIA7z.jpeg",
+              user.getUsername()));
       imageRepository.save(
-          new ImageEntity("fsdr", "rwerd", "http://dummy.ur/fsdr.img", user.getUsername()));
+          new ImageEntity(
+              "fT0wf4m",
+              "qqOQ7X4VTCJDjqj",
+              "https://i.imgur.com/fT0wf4m.jpeg",
+              user.getUsername()));
       imageRepository.save(
-          new ImageEntity("fsdr", "rwerd", "http://dummy.ur/fsdr.img", user.getUsername()));
+          new ImageEntity(
+              "IgQ8F7V",
+              "InRc5BwnincI05F",
+              "https://i.imgur.com/IgQ8F7V.jpeg",
+              user.getUsername()));
       imageRepository.save(
-          new ImageEntity("fsdr", "rwerd", "http://dummy.ur/fsdr.img", user.getUsername()));
+          new ImageEntity(
+              "QCryb56",
+              "Pc6xU5qklCYGI71",
+              "https://i.imgur.com/QCryb56.jpeg",
+              user.getUsername()));
+      imageRepository.save(
+          new ImageEntity(
+              "57t1CyH",
+              "wdtHDVYM3Cbxvpj",
+              "https://i.imgur.com/57t1CyH.jpeg",
+              user.getUsername()));
     };
   }
 }
