@@ -84,6 +84,7 @@ public class ImageService {
     ImgurResponse<Boolean> imgurResponse = imgurApiClient.deleteImage(imageHash);
 
     if (imgurResponse != null) {
+      imageRepository.deleteByImageHashAndUsername(imageHash, username);
       return new Response<>(200, true, "Image deleted");
     }
 
