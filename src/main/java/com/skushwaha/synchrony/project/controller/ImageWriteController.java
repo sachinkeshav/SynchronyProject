@@ -3,8 +3,8 @@ package com.skushwaha.synchrony.project.controller;
 import com.skushwaha.synchrony.project.exception.ImageNotFoundException;
 import com.skushwaha.synchrony.project.exception.UserNotFoundException;
 import com.skushwaha.synchrony.project.request.UserImageRequest;
+import com.skushwaha.synchrony.project.response.ApiResponse;
 import com.skushwaha.synchrony.project.response.ImageResponse;
-import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.service.ImageService;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class ImageWriteController {
 
   @PostMapping(path = "/upload-image")
   @PreAuthorize("hasAuthority('SCOPE_write')")
-  public Response<ImageResponse> uploadImage(
+  public ApiResponse<ImageResponse> uploadImage(
       final @RequestPart("username") String username,
       final @RequestPart("password") String password,
       final @RequestPart("image") MultipartFile image,
@@ -43,7 +43,7 @@ public class ImageWriteController {
 
   @DeleteMapping(path = "/delete-image")
   @PreAuthorize("hasAuthority('SCOPE_write')")
-  public Response<String> deleteImage(final @RequestBody UserImageRequest request)
+  public ApiResponse<String> deleteImage(final @RequestBody UserImageRequest request)
       throws UserNotFoundException, ImageNotFoundException {
     log.debug("Image delete request: {}", request);
     return imageService.deleteImage(request);

@@ -6,7 +6,7 @@ import com.skushwaha.synchrony.project.model.UserEntity;
 import com.skushwaha.synchrony.project.repository.UserRepository;
 import com.skushwaha.synchrony.project.request.UserReadRequest;
 import com.skushwaha.synchrony.project.request.UserRegisterRequest;
-import com.skushwaha.synchrony.project.response.Response;
+import com.skushwaha.synchrony.project.response.ApiResponse;
 import com.skushwaha.synchrony.project.response.UserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -26,7 +26,7 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public Response<UserResponse> registerUser(UserRegisterRequest request)
+  public ApiResponse<UserResponse> registerUser(UserRegisterRequest request)
       throws UserAlreadyExistException {
     validateNewUser(request);
 
@@ -40,7 +40,7 @@ public class UserService {
     return getApiResponse(toUserResponse(savedUser));
   }
 
-  public Response<UserResponse> readUser(UserReadRequest request) throws UserNotFoundException {
+  public ApiResponse<UserResponse> readUser(UserReadRequest request) throws UserNotFoundException {
     return getApiResponse(getUserResponse(request));
   }
 
@@ -102,8 +102,8 @@ public class UserService {
     }
   }
 
-  private Response<UserResponse> getApiResponse(UserResponse userResponse) {
-    return new Response<>(200, true, userResponse);
+  private ApiResponse<UserResponse> getApiResponse(UserResponse userResponse) {
+    return new ApiResponse<>(200, true, userResponse);
   }
 
   private boolean checkIfUserExistForUsername(String username) {

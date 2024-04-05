@@ -4,7 +4,7 @@ import com.skushwaha.synchrony.project.exception.ImageNotFoundException;
 import com.skushwaha.synchrony.project.exception.UserNotFoundException;
 import com.skushwaha.synchrony.project.request.UserImageRequest;
 import com.skushwaha.synchrony.project.request.UserReadRequest;
-import com.skushwaha.synchrony.project.response.Response;
+import com.skushwaha.synchrony.project.response.ApiResponse;
 import com.skushwaha.synchrony.project.response.UserImage;
 import com.skushwaha.synchrony.project.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class ImageReadController {
 
   @PostMapping(path = "/get-all-for-user")
   @PreAuthorize("hasAuthority('SCOPE_read')")
-  public Response<UserImage> getAllImageForUser(final @RequestBody UserReadRequest request)
+  public ApiResponse<UserImage> getAllImageForUser(final @RequestBody UserReadRequest request)
       throws UserNotFoundException {
     log.debug("User request for all image: {}", request);
     return imageService.getUserImages(request);
@@ -36,7 +36,7 @@ public class ImageReadController {
 
   @PostMapping(path = "/get-image")
   @PreAuthorize("hasAuthority('SCOPE_read')")
-  public Response<UserImage> getImage(final @RequestBody UserImageRequest request)
+  public ApiResponse<UserImage> getImage(final @RequestBody UserImageRequest request)
       throws UserNotFoundException, ImageNotFoundException {
     log.debug("Single image read request: {}", request);
     return imageService.getUserImage(request);

@@ -10,8 +10,8 @@ import com.skushwaha.synchrony.project.model.UserEntity;
 import com.skushwaha.synchrony.project.repository.ImageRepository;
 import com.skushwaha.synchrony.project.request.UserImageRequest;
 import com.skushwaha.synchrony.project.request.UserReadRequest;
+import com.skushwaha.synchrony.project.response.ApiResponse;
 import com.skushwaha.synchrony.project.response.ImageResponse;
-import com.skushwaha.synchrony.project.response.Response;
 import com.skushwaha.synchrony.project.response.UserImage;
 import java.io.IOException;
 import java.util.Collections;
@@ -36,7 +36,7 @@ public class ImageService {
     this.imgurApiClient = imgurApiClient;
   }
 
-  public Response<ImageResponse> uploadImage(
+  public ApiResponse<ImageResponse> uploadImage(
       String username, String password, MultipartFile image, String title, String description)
       throws IOException, UserNotFoundException {
     if (isValidUser(username, password)) {
@@ -53,7 +53,7 @@ public class ImageService {
     throw new UserNotFoundException("Unable to find registered user to upload image");
   }
 
-  public Response<UserImage> getUserImages(UserReadRequest request) throws UserNotFoundException {
+  public ApiResponse<UserImage> getUserImages(UserReadRequest request) throws UserNotFoundException {
     UserEntity foundUser = validateAndGetUser(request);
     List<ImageEntity> allImages = imageRepository.findAllByUsername(foundUser.getUsername());
     List<ImageResponse> images = allImages.stream().map(this::toImageResponse).toList();
@@ -62,7 +62,7 @@ public class ImageService {
     return getApiResponse(userImage);
   }
 
-  public Response<UserImage> getUserImage(UserImageRequest request)
+  public ApiResponse<UserImage> getUserImage(UserImageRequest request)
       throws UserNotFoundException, ImageNotFoundException {
     UserEntity foundUser = validateAndGetUser(request.getUsername(), request.getPassword());
     ImgurResponse<ImgurData> imgurResponse = imgurApiClient.viewImage(request.getImageHash());
@@ -80,14 +80,14 @@ public class ImageService {
     throw new ImageNotFoundException("Unable to find image");
   }
 
-  public Response<String> deleteImage(UserImageRequest request)
+  public ApiResponse<String> deleteImage(UserImageRequest request)
       throws UserNotFoundException, ImageNotFoundException {
     UserEntity ignored = validateAndGetUser(request.getUsername(), request.getPassword());
     ImgurResponse<Boolean> imgurResponse = imgurApiClient.deleteImage(request.getImageHash());
 
     if (imgurResponse != null) {
       imageRepository.deleteByImageHashAndUsername(request.getImageHash(), request.getUsername());
-      return new Response<>(200, true, "Image deleted");
+      return new ApiResponse<>(200, true, "Image deleted");
     }
 
     log.warn("Unable to delete image for given hash: {}", request.getImageHash());
@@ -152,12 +152,12 @@ public class ImageService {
         .build();
   }
 
-  private Response<UserImage> getApiResponse(UserImage userImage) {
-    return new Response<>(200, true, userImage);
+  private ApiResponse<UserImage> getApiResponse(UserImage userImage) {
+    return new ApiResponse<>(200, true, userImage);
   }
 
-  private Response<ImageResponse> getApiResponse(ImageResponse imageResponse) {
-    return new Response<>(200, true, imageResponse);
+  private ApiResponse<ImageResponse> getApiResponse(ImageResponse imageResponse) {
+    return new ApiResponse<>(200, true, imageResponse);
   }
 
   private boolean isValidUser(String username, String password) throws UserNotFoundException {

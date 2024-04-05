@@ -2,7 +2,7 @@ package com.skushwaha.synchrony.project.controller;
 
 import com.skushwaha.synchrony.project.exception.UserAlreadyExistException;
 import com.skushwaha.synchrony.project.request.UserRegisterRequest;
-import com.skushwaha.synchrony.project.response.Response;
+import com.skushwaha.synchrony.project.response.ApiResponse;
 import com.skushwaha.synchrony.project.response.UserResponse;
 import com.skushwaha.synchrony.project.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class UserWriteController {
 
   @PostMapping(path = "/register-user")
   @PreAuthorize("hasAuthority('SCOPE_write')")
-  public Response<UserResponse> registerUser(final @RequestBody UserRegisterRequest request)
+  public ApiResponse<UserResponse> registerUser(final @RequestBody UserRegisterRequest request)
       throws UserAlreadyExistException {
     log.debug("User registration request: {}", request);
     return userService.registerUser(request);

@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
-public class Response<T> implements Serializable {
+public class ApiResponse<T> implements Serializable {
   private final int status;
   private final boolean success;
   private final T data;
