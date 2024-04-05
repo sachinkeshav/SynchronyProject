@@ -1,8 +1,7 @@
 package com.skushwaha.synchrony.project.exception;
 
-import org.apache.coyote.BadRequestException;
 
-public class UserAlreadyExistException extends BadRequestException {
+public class UserAlreadyExistException extends Exception {
   public UserAlreadyExistException() {
     super();
   }

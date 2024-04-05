@@ -1,8 +1,7 @@
 package com.skushwaha.synchrony.project.exception;
 
-import org.apache.coyote.BadRequestException;
 
-public class ImageNotFoundException extends BadRequestException {
+public class ImageNotFoundException extends Exception {
   public ImageNotFoundException() {
     super();
   }

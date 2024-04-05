@@ -1,8 +1,7 @@
 package com.skushwaha.synchrony.project.exception;
 
-import org.apache.coyote.BadRequestException;
 
-public class UserNotFoundException extends BadRequestException {
+public class UserNotFoundException extends Exception {
   public UserNotFoundException() {
     super();
   }

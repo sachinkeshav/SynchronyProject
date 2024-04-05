@@ -37,7 +37,7 @@ public class ImageWriteController {
       final @RequestPart("image") MultipartFile image,
       final @RequestPart("title") String title,
       final @RequestPart("description") String description)
-      throws IOException {
+      throws IOException, UserNotFoundException {
     return imageService.uploadImage(username, password, image, title, description);
   }
 

@@ -38,7 +38,7 @@ public class ImageService {
 
   public Response<ImageResponse> uploadImage(
       String username, String password, MultipartFile image, String title, String description)
-      throws IOException {
+      throws IOException, UserNotFoundException {
     if (isValidUser(username, password)) {
       ImgurResponse<ImgurData> imgurResponse =
           imgurApiClient.uploadImage(image, title, description);
